@@ -75,6 +75,11 @@ describe DataMapper::Serializer, '#as_json' do
     expect { Cow.new.as_json(:relationships => [:baby_cows])}.to_not raise_error
     end
 
+    it "handles string and symbol arguments for :relationships" do
+      expect { Cow.new.as_json(:relationships => :baby_cows)}.to_not raise_error
+      expect { Cow.new.as_json(:relationships => 'baby_cows')}.to_not raise_error  
+      end
+
   it "serializes Discriminator types as strings" do
     Motorcycle.new.as_json[:type].should == "Motorcycle"
   end
