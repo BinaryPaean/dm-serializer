@@ -69,6 +69,12 @@ describe DataMapper::Serializer, '#as_json' do
     expect { Cow.new.as_json(nil) }.to_not raise_error
   end
 
+  it "handles nil for :relationships => options" do
+    # This is to prevent :relationships having to be called as:
+    # cow.to_json(:relationships => {:baby_cows => {}})
+    expect { Cow.new.as_json(:relationships => [:baby_cows])}.to_not raise_error
+    end
+
   it "serializes Discriminator types as strings" do
     Motorcycle.new.as_json[:type].should == "Motorcycle"
   end
