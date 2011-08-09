@@ -39,7 +39,11 @@ module DataMapper
       # TODO: This needs tests and also needs to be ported to #to_xml and
       # #to_yaml
       if options[:relationships]
-        options[:relationships].each do |relationship_name, opts|
+        # check for symbol or string argument, and splat-collect if we have one
+        rel = options[:relationships]
+        rel = *rel if (rel.kind_of?(Symbol) || rel.kind_of?(String))
+        rel.each do |relationship_name, opts|
+          # opts will be null from splat, or with nested :relationships
           opts ||= {}
           if respond_to?(relationship_name)
             result[relationship_name] = __send__(relationship_name).to_json(opts.merge(:to_json => false))
