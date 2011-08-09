@@ -40,6 +40,7 @@ module DataMapper
       # #to_yaml
       if options[:relationships]
         options[:relationships].each do |relationship_name, opts|
+          opts ||= {}
           if respond_to?(relationship_name)
             result[relationship_name] = __send__(relationship_name).to_json(opts.merge(:to_json => false))
           end
